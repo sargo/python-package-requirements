@@ -13,9 +13,22 @@ if not os.path.exists(cache_dir):
     os.mkdir(cache_dir)
 
 
+def real_name(pkg_name):
+    resp = requests.get(
+        'http://pypi.python.org/simple/{0}'.format(pkg_name),
+        timeout=10,
+        allow_redirects=True,
+    )
+    return resp.url.split('/')[-2]
+
+
 def get_reqs(pkg_name):
     client = xmlrpclib.ServerProxy('http://pypi.python.org/pypi')
     pkg_releases = client.package_releases(pkg_name)
+    if not pkg_releases:
+        pkg_name = real_name(pkg_name)
+        pkg_releases = client.package_releases(pkg_name)
+
     if pkg_releases:
         pkg_urls = client.release_urls(pkg_name, pkg_releases[0])
         for pkg_url in pkg_urls:
@@ -23,7 +36,7 @@ def get_reqs(pkg_name):
                 url = pkg_url['url']
                 filepath = download(url)
                 if filepath:
-                    return extract_reqs(pkg_name, filepath)
+                    return pkg_name, extract_reqs(pkg_name, filepath)
 
 
 def download(url):

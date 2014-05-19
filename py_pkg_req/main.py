@@ -20,7 +20,7 @@ def show(pkg_name):
     if not pkg_name:
         abort(404)
 
-    reqs = get_reqs(pkg_name)
+    pkg_name, reqs = get_reqs(pkg_name)
     if reqs is None:
         abort(404)
 
