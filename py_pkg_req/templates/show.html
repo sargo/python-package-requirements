@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1><strong>{{ pkg_name }} requires</h1>
+    <ul>
+        {% for req_type in reqs.keys()|sort %}
+            {% if reqs[req_type] %}
+                <li>{{ req_type }}
+                    <ul>
+                        {% for req_name, req_ver in reqs[req_type].items()|sort %}
+                            <li><a href="{{ url_for('show', pkg_name=req_name) }}">{{ req_name }}</a>{{ req_ver }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endblock content %}
