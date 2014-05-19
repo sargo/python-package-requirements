@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1><strong>{{ pkg_name }} requires</h1>
+    <h1>
+        <strong>{{ pkg_name }}</strong>
+        {% if reqs %}
+            requires
+        {% else %}
+            no requirements
+        {% endif %}
+    </h1>
     <ul>
         {% for req_type in reqs.keys()|sort %}
             {% if reqs[req_type] %}
