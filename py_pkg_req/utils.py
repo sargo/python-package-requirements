@@ -110,3 +110,40 @@ def parse_reqs(data):
                 result[section][name] = version
 
     return result
+
+def reqs_graph(pkg_name):
+    nodes = []
+    labels = {}
+    edges = []
+
+    visited = set()
+    stack = [pkg_name]
+
+    while stack:
+        pkg_name = stack.pop()
+        if pkg_name.lower() not in visited:
+            visited.add(pkg_name.lower())
+            result = get_reqs(pkg_name)
+            if result is None:
+                continue
+
+            pkg_label, reqs = result
+            labels[pkg_name.lower()] = pkg_label
+
+            if pkg_name.lower() not in nodes:
+                nodes.append(pkg_name.lower())
+
+            if reqs.get('install'):
+                for sub_pkg_name in sorted(reqs['install'].keys()):
+                    if sub_pkg_name.lower() not in nodes:
+                        nodes.append(sub_pkg_name.lower())
+
+                start = nodes.index(pkg_name.lower())
+                edges.extend([
+                    [start, nodes.index(i.lower())]
+                    for i in sorted(reqs['install'].keys())
+                ])
+                stack.extend(set(reqs['install'].keys()) - visited)
+
+    nodes = [labels.get(name, name) for name in nodes]
+    return nodes, edges

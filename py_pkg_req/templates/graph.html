@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>
+        <strong>{{ pkg_name }}</strong>
+    </h1>
+    
+    <div id="graph">
+        <img src="{{ url_for('graph_data', pkg_name=pkg_name) }}" />
+    </div>
+{% endblock content %}

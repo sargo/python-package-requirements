@@ -9,6 +9,7 @@
             no requirements
         {% endif %}
     </h1>
+    <a href="{{ url_for('graph', pkg_name=pkg_name) }}">Graph</a>
     <ul>
         {% for req_type in reqs.keys()|sort %}
             {% if reqs[req_type] %}

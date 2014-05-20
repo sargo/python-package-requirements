@@ -8,8 +8,9 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-	'Flask',
+        'Flask',
         'requests',
+        'graphviz',
     ],
     entry_points = {
         'console_scripts': [
