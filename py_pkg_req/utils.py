@@ -107,7 +107,7 @@ def parse_reqs(data):
                 name, cond, version = parsed
                 if cond is not None:
                     version = cond + version
-                result[section][name] = version
+                result[section][name.strip()] = version
 
     return result
 
